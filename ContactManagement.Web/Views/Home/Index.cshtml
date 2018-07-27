@@ -1,0 +1,181 @@
+﻿@using ContactManagement.Web.Models;
+@model IEnumerable<CustomerModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+
+        .table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+        }
+
+            .table th {
+                background-color: #F7F7F7;
+                color: #333;
+                font-weight: bold;
+            }
+
+            .table th, .table td {
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+
+        label {
+            width: 10em;
+            float: left;
+        }
+
+            label.error {
+                float: none;
+                color: red;
+                padding-left: 0px;
+                vertical-align: bottom;
+            }
+
+        p {
+            clear: both;
+        }
+
+        fieldset {
+            position: absolute;
+            left: 450px;
+            width: 400px;
+        }
+
+        em {
+            font-weight: bold;
+            padding-right: 1em;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" id="hdnTotalCount" value="@ViewBag.Count" />
+    <form id="customerForm">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="width: 250px">
+                    <span style="color:red">*</span>First Name :<br />
+                    <input data-val="true" data-val-required="Please enter the first name." type="text" id="txtFirstName" style="width:200px" maxlength="50" name="FirstName" /><br />
+                    <span data-valmsg-for="FirstName" data-valmsg-replace="true" style=" color:red"></span>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 250px">
+                    <br />
+                    Last Name:<br />
+                    <input type="text" id="txtLastName" style="width:200px" maxlength="50" />
+
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 250px">
+                    <br />
+                    <span style="color:red">*</span>Email:<br />
+                    <input data-val="true" data-val-required="Please enter the email." type="email" id="txtEmail" style="width:200px" maxlength="150" name="Email" /><br />
+                    <span data-valmsg-for="Email" data-valmsg-replace="true" style=" color:red"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 250px">
+                    <br />
+                    <span style="color:red">*</span> Phone Number:<br />
+                    <input data-val="true" data-val-required="Please enter the phone number." type="number" id="txtPhoneNumber" style="width:200px" maxlength="20" name="PhoneNumber" /><br />
+                    <span data-valmsg-for="PhoneNumber" data-valmsg-replace="true" style=" color:red"></span>
+                </td>
+            <tr>
+                <td style="width: 250px">
+                    <br />
+                    Active:<br />
+                    <input type="checkbox" id="cbStatus" /><br />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 200px">
+
+                    <input type="button" id="btnAdd" value="Add" style="float:right" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <form id="customerUpdateForm">
+        <table id="tblCustomers" class="table" cellpadding="0" cellspacing="0">
+            <tr>
+                <th style="width:100px">Customer Id</th>
+                <th style="width:150px">First Name</th>
+                <th style="width:150px">Last Name</th>
+                <th style="width:150px">Email</th>
+                <th style="width:150px">Phone Number</th>
+                <th style="width:150px">Status</th>
+                <th style="width:150px">Actions</th>
+            </tr>
+            @foreach (CustomerModel customer in Model)
+            {
+                 int index = 0; 
+                <tr>
+                    <td class="CustomerId">
+                        <span>@customer.CustomerId</span>
+                    </td>
+                    <td class="FirstName">
+                        @{var firstName = "FirstName" + customer.CustomerId;}
+                        <span>
+                            @customer.FirstName
+                        </span>                  
+                       
+                       <input type="text" style="display:none" value="@customer.FirstName">
+                    </td>
+                    <td class="LastName">
+                        <span>@customer.LastName</span>
+                        <input type="text" value="@customer.LastName" style="display:none" />
+                    </td>
+                    <td class="Email">
+                        <span>@customer.Email</span>
+                        <input type="text" value="@customer.Email" style="display:none" />
+                    </td>
+                    <td class="PhoneNumber">
+                        <span>@customer.PhoneNumber</span>
+                        <input type="text" value="@customer.PhoneNumber" style="display:none" />
+                    </td>
+                    <td class="Status">
+
+                        @{
+
+                            var status = customer.Status ? customer.Status : false;
+                            string activeText = status ? "Active" : "Inactive";
+                        }
+                        <span>@activeText</span>
+                        @Html.CheckBox("Status", status, new { style = "display: none;" })
+                    </td>
+                    <td>
+                        <a class="Edit" href="javascript:;">Edit</a>
+                        <a class="Update" href="javascript:;" style="display:none">Update</a>
+                        <a class="Cancel" href="javascript:;" style="display:none">Cancel</a>
+                        <a class="Delete" href="javascript:;">Delete</a>
+                    </td>
+                </tr>
+                                index++;
+                            }
+        </table>
+    </form>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script src="~/Scripts/customer.js"></script>
+</body>
+</html>
